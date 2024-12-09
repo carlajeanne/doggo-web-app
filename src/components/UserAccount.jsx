@@ -2,42 +2,67 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function UserAccountDashboard() {
-  const navigate = useNavigate();
+  
+
+  const navigate = useNavigate(); // Initialize navigate
+
+    const handleFetchingButtonClick = () => {
+      navigate("/fetching-page");  // Redirect to the Fetching page
+    };
+
+    const handlePetCamButtonClick = () => {
+        navigate("/petcam-page");  // Redirect to the PetCam page
+    };
+
+    const handleLandingPageClick = () => {
+    navigate("/");  // Redirect to the Landing page
+    };
+
+    const handleGalleryButtonClick = () => {
+        navigate("/gallery-page");  // Redirect to the Gallery page
+    };
+
+    const handleDashboardButtonClick = () => {
+        navigate("/dashboard-page");  // Redirect to the Dashboard page
+    };
+
+
+
 
   return (
     <div className="flex min-h-screen bg-gray-100 font-montserrat">
       {/* Sidebar */}
       <aside className="w-1/4 bg-white shadow-lg p-6">
-        <h2 className="text-xl font-semibold mb-6">What to Do?</h2>
+        <h2 className="text-xl font-semibold mb-6 mt-20">What to Do?</h2>
         <ul className="space-y-4">
           <li>
             <button
-              onClick={() => navigate("/fetching-device")}
-              className="text-gray-600 hover:text-blue-600"
+              onClick={handleFetchingButtonClick}
+              className="text-gray-600 hover:text-yellow hover:transition duration-300"
             >
               Fetching Device
             </button>
           </li>
           <li>
             <button
-              onClick={() => navigate("/gallery")}
-              className="text-gray-600 hover:text-blue-600"
+              onClick={handleGalleryButtonClick}
+              className="text-gray-600 hover:text-yellow hover:transition duration-300"
             >
               Gallery
             </button>
           </li>
           <li>
             <button
-              onClick={() => navigate("/see-your-dog")}
-              className="text-gray-600 hover:text-blue-600"
+              onClick={handlePetCamButtonClick}
+              className="text-gray-600 hover:text-yellow hover:transition duration-300"
             >
               See Your Dog
             </button>
           </li>
           <li>
             <button
-              onClick={() => navigate("/dog-emotions-analysis")}
-              className="text-gray-600 hover:text-blue-600"
+              onClick={handleDashboardButtonClick}
+              className="text-gray-600 hover:text-yellow hover:transition duration-300"
             >
               Dog Emotions Analysis
             </button>
@@ -47,7 +72,7 @@ export default function UserAccountDashboard() {
 
       {/* Main Content */}
       <main className="w-3/4 p-8">
-        <h2 className="text-2xl font-semibold mb-6">My Profile</h2>
+        <h2 className="text-2xl font-semibold mb-6 mt-20">My Profile</h2>
         <section className="bg-white p-6 rounded-lg shadow-lg mb-8">
           <div className="flex items-center space-x-4">
             <img
