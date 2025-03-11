@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD:src/components/Dashboard.jsx
+import { SquareArrowUp, SquareArrowDown, SquareArrowRight } from 'lucide-react';
+import { Bar, Doughnut, Line } from 'react-chartjs-2'; // Import Doughnut
+=======
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
 import 'chart.js/auto';
 
 const Dashboard = () => {
@@ -21,7 +26,11 @@ const Dashboard = () => {
                 {
                     label: 'Anger',
                     data: [2, 10, 2, 5, 2, 15, 4],
+<<<<<<< HEAD:src/components/Dashboard.jsx
+                    backgroundColor: '#FF0000',
+=======
                     backgroundColor: '#85522D',
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
                 },
                 {
                     label: 'Fear',
@@ -46,7 +55,11 @@ const Dashboard = () => {
                 {
                     label: 'Anger',
                     data: [3, 9, 4, 6, 2, 12, 5],
+<<<<<<< HEAD:src/components/Dashboard.jsx
+                    backgroundColor: '#FF0000',
+=======
                     backgroundColor: '#85522D',
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
                 },
                 {
                     label: 'Fear',
@@ -71,7 +84,11 @@ const Dashboard = () => {
                 {
                     label: 'Anger',
                     data: [4, 7, 5, 6, 9, 8, 3],
+<<<<<<< HEAD:src/components/Dashboard.jsx
+                    backgroundColor: '#FF0000',
+=======
                     backgroundColor: '#85522D',
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
                 },
                 {
                     label: 'Fear',
@@ -96,7 +113,11 @@ const Dashboard = () => {
                 {
                     label: 'Anger',
                     data: [6, 8, 7, 5, 6, 9, 4],
+<<<<<<< HEAD:src/components/Dashboard.jsx
+                    backgroundColor: '#FF0000',
+=======
                     backgroundColor: '#85522D',
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
                 },
                 {
                     label: 'Fear',
@@ -122,7 +143,11 @@ const Dashboard = () => {
             {
                 label: 'Anger',
                 data: [6, 8, 7, 5, 6, 9, 4],
+<<<<<<< HEAD:src/components/Dashboard.jsx
+                backgroundColor: '#FF0000',
+=======
                 backgroundColor: '#85522D',
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
             },
             {
                 label: 'Fear',
@@ -161,6 +186,46 @@ const Dashboard = () => {
     const [selectedWeek, setSelectedWeek] = useState(0); 
     const [selectedDay, setSelectedDay] = useState(0); 
 
+    // Function to calculate emotion trends
+    const getEmotionTrends = () => {
+        const monthlySums = {};
+        const trends = {};
+
+        // Sum up emotion values for the month
+        weekData.forEach((week) => {
+            week.datasets.forEach((dataset) => {
+                if (!monthlySums[dataset.label]) {
+                    monthlySums[dataset.label] = 0;
+                }
+                monthlySums[dataset.label] += dataset.data.reduce((sum, value) => sum + value, 0);
+            });
+        });
+
+        // Compare week-to-week changes for trends
+        weekData.forEach((week, weekIndex) => {
+            week.datasets.forEach((dataset) => {
+                const previousWeekValue = weekIndex > 0
+                    ? weekData[weekIndex - 1].datasets.find((d) => d.label === dataset.label)?.data.reduce((sum, value) => sum + value, 0) || 0
+                    : 0;
+                const currentWeekValue = dataset.data.reduce((sum, value) => sum + value, 0);
+
+                if (!trends[dataset.label]) {
+                    trends[dataset.label] = {
+                        trend: currentWeekValue > previousWeekValue ? 'Increased' : 'Decreased',
+                        change: Math.abs(currentWeekValue - previousWeekValue),
+                    };
+                }
+            });
+        });
+
+        return {
+            monthlySums,
+            trends,
+        };
+    };
+
+    const { monthlySums, trends } = getEmotionTrends();
+
     // Calculate top 3 emotions for the selected day
     const getTop3Emotions = (weekIndex, dayIndex) => {
         const emotions = weekData[weekIndex].datasets.map((dataset) => ({
@@ -176,6 +241,7 @@ const Dashboard = () => {
             datasets: [
                 {
                     data: top3.map((emotion) => emotion.value),
+                    hoverOffset: 5,
                     backgroundColor: top3.map((emotion) =>
                         weekData[weekIndex].datasets.find((dataset) => dataset.label === emotion.label).backgroundColor
                     ),
@@ -195,7 +261,12 @@ const Dashboard = () => {
                 position: 'bottom', 
                 maxWidth: 200, 
                 labels: {
+<<<<<<< HEAD:src/components/Dashboard.jsx
+                    usePointStyle: true, // Use point style for legend items
+                    padding: 20, // Adds padding around the legend items 
+=======
                     padding: 20,
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
                 },
             },
             tooltip: {
@@ -260,16 +331,61 @@ const Dashboard = () => {
     };
 
     return (
+<<<<<<< HEAD:src/components/Dashboard.jsx
+        <div className="h-100% flex flex-col items-center justify-center p-5 ">
+             {/* Logo Section */}
+             <div className="flex justify-center mt-20">
+                <img src="/public/dash_title.png"
+                 alt="Logo" className="w-200 h-auto" />
+=======
         <div className="h-100% flex flex-col items-center justify-center bg-very-bright-pastel-orange p-5 ">
             {/* Logo Section */}
             <div className="flex justify-center mt-20">
                 <img src="/public/logo.png" alt="Logo" className="w-25 h-20" />
+>>>>>>> upstream/main:frontend/src/components/dashboard/Dashboard.jsx
             </div>
+
+          {/* Emotion Summary Section */}
+          <div className="w-full max-w-4xl mx-auto mt-3 p-4">
+            <div className="flex flex-wrap justify-between gap-4">
+                {Object.entries(monthlySums).map(([emotion, total]) => {
+                    const trend = trends[emotion]?.trend || 'Neutral';
+                    const change = trends[emotion]?.change || 0;
+
+                    // Determine the correct icon based on the trend
+                    let trendIcon;
+                    if (trend === 'Increased') {
+                        trendIcon = <SquareArrowUp className="text-yellow" />;
+                    } else if (trend === 'Decreased') {
+                        trendIcon = <SquareArrowDown className="text-red-600" />;
+                    } else {
+                        trendIcon = <SquareArrowRight className="text-gray-500" />;
+                    }
+
+                    return (
+                        <div key={emotion} className="w-[200px] p-3 border rounded-lg shadow-md text-center"  style={{ backgroundColor: "#F4ECE1" }}>
+                            <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
+                                {emotion} 
+                                {trendIcon}
+                            </h3>
+                            <p className="text-xl font-bold">{total} hrs</p>
+                            <p className="text-sm font-medium text-green-600">
+                                {trend} by {change} hrs
+                            </p>
+                        </div>
+                        
+                        
+                    );
+                })}
+            </div>
+        </div>
+    
+
+
             {/* Dashboard Content */}
                 <div className="justify flex flex-col md:flex-row w-[80%] overflow-x-hidden gap-7">
                 {/* Week Dropdown */}
-                <div className="bar-container flex-grow  max-w-full mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg">
-                    <h2 className="text-1xl font-bold text-center mb-4">Select Week</h2>
+                <div className="bar-container flex-grow  max-w-full mx-auto mt-8 p-4 ">
                     <select
                         className="block w-full p-2 mb-4 text-center border rounded-md"
                         value={selectedWeek}
@@ -306,8 +422,11 @@ const Dashboard = () => {
                 </div>
                 
                 {/* Pie Chart */}
-                <div className="w-full max-w-md mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg">
-                    <h2 className="text-2xl font-bold text-center mb-7 mt-7">Top 3 Emotions</h2>
+                <div className="w-full max-w-md mx-auto mt-8 p-4 ">
+                    <h2 className="text-2xl font-bold text-center mb-4">Top 3 Emotions</h2>
+                    <p className="text-center text-gray-500 mb-4">
+                        For {weekData[selectedWeek].labels[selectedDay]} (Week {selectedWeek + 1})
+                    </p>
                     <div style={{ height: '400px', width: '100%' }}>
                         <Doughnut data={pieData} options={pieOptions} />
                     </div>
@@ -315,7 +434,7 @@ const Dashboard = () => {
             </div>
 
              {/* Line Graph */}
-             <div className="w-full max-w-4xl mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg">
+             <div className="w-full max-w-4xl mx-auto mt-8 p-4">
                 <h2 className="text-2xl font-bold text-center mb-4">Top Emotions Over the Month</h2>
                 <div style={{ height: '400px', width: '100%' }}>
                     <Line data={lineData} options={lineOptions} />
