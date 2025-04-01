@@ -11,6 +11,16 @@ export default function SignIn({ toggleModal, openSignUpModal, openForgotPassMod
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError('');
+            }, 3000); 
+    
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+    useEffect(() => {
         const savedEmail = localStorage.getItem('savedEmail');
         if (savedEmail) {
             setEmail(savedEmail);
@@ -50,10 +60,11 @@ export default function SignIn({ toggleModal, openSignUpModal, openForgotPassMod
             }
     
             const data = await response.json();
+            console.log("Login Response:", data);
     
-            if (data.access_token) {
+            if (data.refresh_token) {
                 // Save the token and user ID in local storage
-                localStorage.setItem('token', data.access_token);
+                localStorage.setItem('token', data.refresh_token);
                 localStorage.setItem('user_id', data.id);  // Save user ID
     
                 // Save the email if "Remember me" is checked
